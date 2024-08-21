@@ -1,18 +1,19 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.box = "bento/ubuntu-24.04"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.vm.network "private_network", ip: "192.168.56.10"
 
   config.vm.define "trusty" do |node|
     node.vm.hostname = "trusty.local"
-    node.vm.provision "ansible" do |ansible|
-      ansible.playbook = "main.yml"
-    end
   end
 
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "512"
-    vb.cpus = "1"
+    vb.memory = "2048"
+    vb.cpus = "2"
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "main.yml"
   end
 
   config.vm.provision "shell", inline: <<-SHELL
